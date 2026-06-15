@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zerocoder — Дашборд отзывов 11.06.2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#1C1C1C; --card:#2A2A2A; --card2:#323232; --border:#3F3F46;
+  --green:#4ADE80; --purple:#A78BFA; --yellow:#FACC15; --red:#F87171;
+  --text:#E5E7EB; --muted:#9CA3AF;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; line-height: 1.5; }
+a { color: var(--purple); text-decoration: none; }
+.header { background: #212121; border-bottom: 1px solid var(--border); padding: 18px 32px; display: flex; align-items: center; justify-content: space-between; }
+.header-logo { font-size: 20px; font-weight: 700; color: var(--green); letter-spacing: -0.5px; }
+.header-sub  { color: var(--muted); font-size: 13px; }
+.header-date { color: var(--muted); font-size: 13px; text-align: right; }
+.page { max-width: 1400px; margin: 0 auto; padding: 24px 24px 48px; }
+.section { margin-bottom: 36px; }
+.section-title { font-size: 13px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); border-left: 3px solid var(--purple); padding-left: 10px; margin-bottom: 16px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+.card-title { font-size: 12px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.8px; }
+.card-value { font-size: 32px; font-weight: 700; line-height: 1; }
+.card-sub { font-size: 12px; color: var(--muted); margin-top: 6px; }
+.green { color: var(--green); } .yellow { color: var(--yellow); } .purple { color: var(--purple); } .red { color: var(--red); }
+.chart-wrap   { position: relative; height: 240px; }
+.chart-wrap-lg{ position: relative; height: 320px; }
+.chart-wrap-xl{ position: relative; height: 380px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { color: var(--muted); font-weight: 500; text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; }
+td { padding: 7px 10px; border-bottom: 1px solid #333; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.03); }
+.quotes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.quote-card  { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 14px; }
+.quote-text  { font-size: 13px; color: var(--text); line-height: 1.55; font-style: italic; }
+.quote-name  { font-size: 11px; color: var(--muted); margin-top: 8px; display: block; }
+code { background: #1f1f1f; padding: 1px 5px; border-radius: 4px; color: var(--purple); font-size: 12px; }
+.footer { text-align: center; color: #555; font-size: 11px; margin-top: 48px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">Zerocoder · Дашборд отзывов</div>
+    <div class="header-sub">Внешние площадки + внутренние отзывы GetCourse</div>
+  </div>
+  <div class="header-date">Обновлено: 11.06.2026<br>Снимок: 2026-06-11 10:15</div>
+</div>
+
+<div class="page">
+
+<div class="section">
+  <div class="section-title">Сводные показатели</div>
+  <div class="grid-4">
+    <div class="card">
+      <div class="card-title">Всего отзывов</div>
+      <div class="card-value green">2467</div>
+      <div class="card-sub">11 площадок (включая GetCourse)</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Средний рейтинг (внешние)</div>
+      <div class="card-value yellow">4.76★</div>
+      <div class="card-sub">по площадкам, где есть оценки</div>
+    </div>
+    <div class="card">
+      <div class="card-title">С ответом представителя</div>
+      <div class="card-value purple">148</div>
+      <div class="card-sub">6.0% от всех отзывов</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Снимок данных</div>
+      <div class="card-value">2026-06-11 10:15</div>
+      <div class="card-sub">обновляется скриптами</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-title">Рейтинг по площадкам</div>
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-title">Контраст: «платные» каталоги vs карточные сервисы</div>
+    <div class="card-sub" style="font-size:13px;line-height:1.6;">
+      На каталогах (TutorTop, okursah, skill2go, KursHub) средний рейтинг
+      <b class="green">4.6+</b> — там модерация и фильтрация.
+      На карточных сервисах (Яндекс Карты, iRecommend, 2ГИС) средний
+      <b class="red">3.3–4.3</b> — там органика и эмоции.
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Количество отзывов и средняя оценка</div>
+      <div class="chart-wrap-lg"><canvas id="chartSources"></canvas></div>
+    </div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Площадка</th><th>Отзывов</th><th>Ср. рейтинг</th><th>С ответом</th></tr></thead>
+        <tbody><tr><td>Отзовик</td><td>1454</td><td>4.82★</td><td>0.0%</td></tr><tr><td>GetCourse (внутр.)</td><td>680</td><td>—</td><td>21.8%</td></tr><tr><td>TutorTop</td><td>123</td><td>4.63★</td><td>0.0%</td></tr><tr><td>okursah.ru</td><td>61</td><td>4.72★</td><td>0.0%</td></tr><tr><td>skill2go</td><td>50</td><td>4.66★</td><td>0.0%</td></tr><tr><td>2ГИС</td><td>26</td><td>4.31★</td><td>0.0%</td></tr><tr><td>pgdv.ru</td><td>25</td><td>4.80★</td><td>0.0%</td></tr><tr><td>Яндекс Карты</td><td>21</td><td>3.33★</td><td>0.0%</td></tr><tr><td>iRecommend</td><td>12</td><td>3.67★</td><td>0.0%</td></tr><tr><td>KursHub</td><td>10</td><td>4.90★</td><td>0.0%</td></tr><tr><td>Google Maps</td><td>5</td><td>4.20★</td><td>0.0%</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-title">Курсы: лидеры и зоны роста</div>
+  <div class="grid-2">
+    
+<div class="card">
+  <div class="card-title">Топ-5 курсов</div>
+  <table>
+    <thead><tr><th>Курс</th><th>Отзывов</th><th>Оценка</th></tr></thead>
+    <tbody><tr><td>ПРОМПТ-ИНЖИНИРИНГ</td><td>39</td><td class='green'>5.00</td></tr><tr><td>ВЕБ-ДИЗАЙНЕР</td><td>62</td><td class='green'>4.94</td></tr><tr><td>АНАЛИТИК ДАННЫХ С НУЛЯ</td><td>21</td><td class='green'>4.93</td></tr><tr><td>TILDA</td><td>15</td><td class='green'>4.92</td></tr><tr><td>НЕЙРОСЕТИ ДЛЯ ПРЕПОДАВАТЕЛЯ</td><td>10</td><td class='green'>4.90</td></tr></tbody>
+  </table>
+  <div class="card-sub" style="margin-top:8px;">Оценки на rating-источниках — по 1–5; на текстовых — по сентимент-прокси.</div>
+</div>
+
+    
+<div class="card">
+  <div class="card-title">Антитоп: над чем работать</div>
+  <table>
+    <thead><tr><th>Курс</th><th>Отзывов</th><th>Оценка</th></tr></thead>
+    <tbody><tr style="background: rgba(248,113,113,0.12); border-left: 3px solid #F87171;"><td>ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО <span style="color:#F87171;font-size:11px;font-weight:700;">⚠ БРЕНД-РИСК</span></td><td>13 внешних / 112 GC</td><td class='red'>3.00 / ↑</td></tr><tr><td>КИТАЙСКИЕ НЕЙРОСЕТИ</td><td>32</td><td class='red'>4.12</td></tr><tr><td>AIRTABLE</td><td>6</td><td class='red'>4.17</td></tr><tr><td>ВЕБ-РАЗРАБОТКА</td><td>26</td><td class='red'>4.38</td></tr><tr><td>ВАЙБ-МАРКЕТИНГ</td><td>40</td><td class='red'>4.42</td></tr></tbody>
+  </table>
+  <div class="card-sub" style="margin-top:8px;">Оценки на rating-источниках — по 1–5; на текстовых — по сентимент-прокси.</div>
+</div>
+
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-title">Темы: сильные и слабые места</div>
+  <div class="grid-2" style="margin-bottom:16px;">
+<div class="card">
+  <div class="card-title red">Тема «Цена» — повышенное внимание</div>
+  <div class="card-value red">10.4%</div>
+  <div class="card-sub">негативных упоминаний из 231 (24 негативных, 184 позитивных)</div>
+</div>
+
+<div class="card">
+  <div class="card-title red">Тема «Продажи» — повышенное внимание</div>
+  <div class="card-value red">19.2%</div>
+  <div class="card-sub">негативных упоминаний из 120 (23 негативных, 91 позитивных)</div>
+</div>
+</div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Распределение упоминаний по темам</div>
+      <div class="chart-wrap-lg"><canvas id="chartThemes"></canvas></div>
+    </div>
+    <div class="card">
+      <table>
+        <thead><tr><th>Тема</th><th>Упоминаний</th><th>+</th><th>0</th><th>—</th><th>% негатива</th></tr></thead>
+        <tbody><tr><td>Контент</td><td>1726</td><td class='green'>1586</td><td>106</td><td class='red'>34</td><td class='green'>2.0%</td></tr><tr><td>Кураторы</td><td>967</td><td class='green'>885</td><td>63</td><td class='red'>19</td><td class='green'>2.0%</td></tr><tr><td>Поддержка</td><td>963</td><td class='green'>878</td><td>56</td><td class='red'>29</td><td class='green'>3.0%</td></tr><tr><td>Платформа</td><td>787</td><td class='green'>721</td><td>49</td><td class='red'>17</td><td class='green'>2.2%</td></tr><tr><td>Цена</td><td>231</td><td class='green'>184</td><td>23</td><td class='red'>24</td><td class='red'>10.4%</td></tr><tr><td>Продажи</td><td>120</td><td class='green'>91</td><td>6</td><td class='red'>23</td><td class='red'>19.2%</td></tr></tbody>
+      </table>
+      <div class="card-sub" style="margin-top:8px;">Сентимент определяется по рейтингу (если есть) или лексикону.</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="section">
+  <div class="section-title">Инсайты для продаж и маркетинга</div>
+  <div class="grid-2">
+<div class="card">
+  <div class="card-title green">Почему выбирают</div>
+  <div class="quotes-grid" style="margin-top:10px;"><div class="quote-card">
+  <div class="quote-text">«в середине курса я понял, что нашёл хороший образовательный центр и купил абонемент Бизнес навсегда с большим количеством курсов»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Бесплатный интенсив как воронка: пробуют формат и покупают абонемент</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Ранее я не был знаком с Зерокодером. Посоветовали хорошие знакомы»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Рекомендации друзей и знакомых</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«решила, что в этот раз постараюсь сесть в первый вагон, а не бежать потом изо всех сил за последним»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Страх отстать от тренда по ИИ — сильнейший мотив</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Это мой первый курс по нейросетям и я в восторге!»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Первый осознанный курс по нейросетям без опыта в ИИ</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«За три дня интенсива с нуля удалось сделать полноценного ИИ ассистента не имея навыков программирования!»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Обещание готового результата за короткий срок</b></div>
+  <span class="quote-name">otzovik · Интенсив по чат-ботам</span>
+</div></div>
+</div>
+
+<div class="card">
+  <div class="card-title green">Что зашло</div>
+  <div class="quotes-grid" style="margin-top:10px;"><div class="quote-card">
+  <div class="quote-text">«Уроки короткие , емкие. Все показывают, ведут за руку. Все понятно»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Подача "за руку": короткие видео + текст, можно идти своим темпом</b></div>
+  <span class="quote-name">otzovik · Интенсив по чат-ботам</span>
+</div><div class="quote-card">
+  <div class="quote-text">«За три дня интенсива с нуля удалось сделать полноценного ИИ ассистента не имея навыков программирования!»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Реальный готовый продукт на выходе интенсива</b></div>
+  <span class="quote-name">otzovik · Интенсив по чат-ботам</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Особо хочу проблагодарить куратора Елену Кастеллано. Она была со мной на связи пол ночи, когда я делала бота!»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Конкретные преподаватели и кураторы (Ксения, Илона, Елена Кастеллано) — главный возвратный фактор</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Намного больше, чем я ожидал от бесплатного интенсива»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Бесплатный интенсив воспринимается как полноценный продукт</b></div>
+  <span class="quote-name">otzovik · Интенсив по чат-ботам</span>
+</div><div class="quote-card">
+  <div class="quote-text">«пошли навстречу курсантам, выдавая новые коды и продлив период доступа»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Команда идёт навстречу в кризисных ситуациях (доп. курс, продление доступа)</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div></div>
+</div>
+
+<div class="card">
+  <div class="card-title yellow">Возражения до покупки</div>
+  <div class="quotes-grid" style="margin-top:10px;"><div class="quote-card">
+  <div class="quote-text">«будут жёстко впаривать свои платные курсы. Также надо быть готовым к спам атаке на почту и ТГ. По 15-17 сообщений на каждый канал»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Агрессивные продажи и впаривание полного курса на бесплатном интенсиве</b></div>
+  <span class="quote-name">otzovik · unknown</span>
+</div><div class="quote-card">
+  <div class="quote-text">«школа пообещала то, что не не имела право раздавать своим»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Обещали PRO-подписку — слетела, возвращать отказались</b></div>
+  <span class="quote-name">tutortop · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Все вебинары идут в записи - это автовебинары. Его раз записали и теперь крутят»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Контент устарел: интерфейсы программ обновились, видео не переписывают</b></div>
+  <span class="quote-name">otzovik · ПРОГРАММИСТ НА PYTHON С CHATGPT</span>
+</div><div class="quote-card">
+  <div class="quote-text">«10 тыс я должна была в любом случае выплатить Тинькоф как проценты за КРЕДИТ»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Рассрочка через Тинькофф — на самом деле кредит с процентами</b></div>
+  <span class="quote-name">otzovik · unknown</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Обещали вернуть деньги, но куда там - ничего не вернули! Мошенники»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Возвраты не работают: "прошло больше половины — ничего не вернём"</b></div>
+  <span class="quote-name">otzovik · unknown</span>
+</div><div class="quote-card">
+  <div class="quote-text">«курс стоимостью максимум 30 тысяч продают почти за миллион»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Цена воспринимается как сильно завышенная относительно содержания</b></div>
+  <span class="quote-name">otzovik · unknown</span>
+</div></div>
+</div>
+
+<div class="card">
+  <div class="card-title red">Что не зашло</div>
+  <div class="quotes-grid" style="margin-top:10px;"><div class="quote-card">
+  <div class="quote-text">«Фейковые вебинары с фейковой активностью в чате!»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Автовебинары под видом live, фейковая активность в чате</b></div>
+  <span class="quote-name">yandex · unknown</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Кураторы не заинтересованы в учениках»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Кураторы отвечают медленно или шаблонно, не разбирают суть</b></div>
+  <span class="quote-name">otzovik · МОБИЛЬНАЯ РАЗРАБОТКА</span>
+</div><div class="quote-card">
+  <div class="quote-text">«не стоит 100+ тыс руб»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Поверхностный контент на дорогих курсах</b></div>
+  <span class="quote-name">otzovik · unknown</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Половина программы посвящена как себя продавать, да как зарегистрироваться на фрилансе»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Половина программы про "как себя продавать", а не про ремесло</b></div>
+  <span class="quote-name">otzovik · РАЗРАБОТЧИК ЧАТ-БОТОВ</span>
+</div><div class="quote-card">
+  <div class="quote-text">«звонят и с наглым тоном отвечая игнорируют все насущные вопросы»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Менеджеры давят, игнорируют возражения</b></div>
+  <span class="quote-name">2gis · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div></div>
+</div>
+</div>
+  
+<div class="card" style="margin-top:16px;border-left:3px solid #F87171;">
+  <div class="card-title red">Перплексити — поляризация и репутационный риск</div>
+  <div class="card-sub" style="margin-top:6px;line-height:1.55;">
+    <b>Внешние площадки (13 отзывов, средняя 3.00):</b> распределение 6×5★ + 1×3★ + 6×1★ — кто-то в восторге, кто-то разнёс в пух. Бренд-риск на 2ГИС, Яндекс Картах, TutorTop, Отзовике — там видны и 1★ с обвинениями в обмане.<br>
+    <b>GC (112 отзывов от выпускников):</b> в основном позитивные — курс окончили, преподавателей хвалят. Но <b>10 отзывов прямо упоминают проблему PRO-подписки</b> — это сквозная боль, повторяющаяся у тех, кто доволен в целом.<br>
+    <b>Срочно:</b> убрать из лендинга обещание бесплатной PRO-подписки или явно прописать риск её отключения. Это главный триггер 1★ на внешних площадках.
+  </div>
+</div>
+<div class="grid-2" style="margin-top:16px;">
+<div class="card">
+  <div class="card-title red">Продажи — 23 негатива из 120 (19.2%)</div>
+  <div class="card-sub" style="margin-top:8px;line-height:1.55;">
+    <b>На что жалуются:</b>
+    <ul style="margin:6px 0 0 18px;padding:0;">
+      <li>Бесплатные вебинары превращаются в «магазин на диване» — половина времени активная продажа курса.</li>
+      <li>Обещания со сцены не сбываются: «домохозяйка сможет», «дадим заказы и окупите курс», «достойные заработки».</li>
+      <li>Обман с токенами на скидку — начислялись не все.</li>
+      <li>Спам-звонки и сообщения после регистрации, даже после отписки.</li>
+      <li>VIP-тариф «отличается только ценой» — обещанных «вечных» заказов нет.</li>
+    </ul>
+  </div>
+</div>
+<div class="card">
+  <div class="card-title yellow">Цена — 24 негатива из 231 (10.4%)</div>
+  <div class="card-sub" style="margin-top:8px;line-height:1.55;">
+    <b>На что жалуются:</b>
+    <ul style="margin:6px 0 0 18px;padding:0;">
+      <li>Проблема не в самой цене, а в ощущении обмана: рассрочка через банк = кредит с процентами.</li>
+      <li>Невозврат денег — «читайте оферту внимательно, особенно условия возврата».</li>
+      <li>Выплачивают кредит за курс, который «не научил».</li>
+      <li>Стоимость абонентского обслуживания после курса — слишком высокая для конечных клиентов выпускников.</li>
+      <li>Дорогой VIP без реальной добавочной стоимости.</li>
+    </ul>
+  </div>
+</div></div>
+<div class="card" style="margin-top:16px;">
+  <div class="card-title green">Цитаты для лендинга и маркетинга</div>
+  <div class="quotes-grid" style="margin-top:10px;"><div class="quote-card">
+  <div class="quote-text">«Это мой первый курс по нейросетям и я в восторге!»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Восторг новичка</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Учебу на курсах считаю лучшим своим решением, принятым в этом году»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Эмоциональная оценка решения</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Этот интенсив - вообще огонь!»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Подростковая энергия</b></div>
+  <span class="quote-name">otzovik · Интенсив по чат-ботам</span>
+</div><div class="quote-card">
+  <div class="quote-text">«За три дня интенсива с нуля удалось сделать полноценного ИИ ассистента не имея навыков программирования!»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Сильный результат за 3 дня</b></div>
+  <span class="quote-name">otzovik · Интенсив по чат-ботам</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Намного больше, чем я ожидал от бесплатного интенсива»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Удивление от бесплатного формата</b></div>
+  <span class="quote-name">otzovik · Интенсив по чат-ботам</span>
+</div><div class="quote-card">
+  <div class="quote-text">«это настоящее открытие, game changer»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Жизненный поворот</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«выпускной проект - для меня это чудо»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Гордость за выпускной проект</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«мои ожидания полностью совпали с реальностью»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Совпали ожидания</b></div>
+  <span class="quote-name">gc · ПЕРПЛЕКСИТИ: ОТ НОВИЧКА ДО ПРО</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Превосходный курс! Материал подан доступно»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Превосходство в качестве материала</b></div>
+  <span class="quote-name">otzovik · НЕЙРОСЕТИ: ОТ ПРИНЦИПОВ К ПРАКТИКЕ</span>
+</div><div class="quote-card">
+  <div class="quote-text">«Полноценный курс за 0 руб., понятная подача для новичков»</div>
+  <div class="card-sub" style="margin-top:8px;"><b>Бесплатное как полноценное</b></div>
+  <span class="quote-name">otzovik · Интенсив по чат-ботам</span>
+</div></div>
+</div>
+
+</div>
+
+
+<div class="section">
+  <div class="section-title">Динамика по месяцам</div>
+  <div class="card">
+    <div class="card-title">Объём отзывов и средний рейтинг</div>
+    <div class="chart-wrap-xl"><canvas id="chartMonthly"></canvas></div>
+  </div>
+</div>
+
+<div class="footer">Источник данных: <code>data/unified-reviews.csv</code> · агрегаты: <code>tmp/dashboard-data.json</code></div>
+</div>
+
+<script>
+const D = {"srcLabels": ["Отзовик", "GetCourse (внутр.)", "TutorTop", "okursah.ru", "skill2go", "2ГИС", "pgdv.ru", "Яндекс Карты", "iRecommend", "KursHub", "Google Maps"], "srcCounts": [1454, 680, 123, 61, 50, 26, 25, 21, 12, 10, 5], "srcRatings": [4.82, null, 4.63, 4.72, 4.66, 4.31, 4.8, 3.33, 3.67, 4.9, 4.2], "themeLabels": ["Контент", "Кураторы", "Поддержка", "Платформа", "Цена", "Продажи"], "themePos": [1586, 885, 878, 721, 184, 91], "themeNeu": [106, 63, 56, 49, 23, 6], "themeNeg": [34, 19, 29, 17, 24, 23], "monthLabels": ["2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"], "monthCounts": [33, 26, 28, 29, 36, 28, 22, 22, 18, 11, 10, 3], "monthRatings": [null, null, null, null, null, null, null, null, null, null, null, null]};
+const palette = { green:'#4ADE80', purple:'#A78BFA', yellow:'#FACC15', red:'#F87171', muted:'#9CA3AF' };
+const baseOpts = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: { legend: { labels: { color: '#E5E7EB' } } },
+  scales: {
+    x: { ticks: { color: palette.muted }, grid: { color: '#333' } },
+    y: { ticks: { color: palette.muted }, grid: { color: '#333' } },
+  }
+};
+
+new Chart(document.getElementById('chartSources'), {
+  type: 'bar',
+  data: {
+    labels: D.srcLabels,
+    datasets: [
+      { label: 'Отзывов', data: D.srcCounts, backgroundColor: palette.purple, yAxisID: 'y' },
+      { label: 'Ср. рейтинг', data: D.srcRatings, backgroundColor: palette.yellow, yAxisID: 'y1', type: 'line', borderColor: palette.yellow, tension: 0.3 },
+    ]
+  },
+  options: {
+    ...baseOpts,
+    scales: {
+      x: { ticks: { color: palette.muted }, grid: { color: '#333' } },
+      y:  { position:'left', ticks: { color: palette.muted }, grid: { color: '#333' } },
+      y1: { position:'right', min: 0, max: 5, ticks: { color: palette.muted }, grid: { display: false } },
+    }
+  }
+});
+
+new Chart(document.getElementById('chartThemes'), {
+  type: 'bar',
+  data: {
+    labels: D.themeLabels,
+    datasets: [
+      { label: 'Положительные', data: D.themePos, backgroundColor: palette.green },
+      { label: 'Нейтральные',  data: D.themeNeu, backgroundColor: palette.muted },
+      { label: 'Негативные',   data: D.themeNeg, backgroundColor: palette.red },
+    ]
+  },
+  options: {
+    ...baseOpts,
+    indexAxis: 'y',
+    scales: {
+      x: { stacked: true, ticks: { color: palette.muted }, grid: { color: '#333' } },
+      y: { stacked: true, ticks: { color: palette.muted }, grid: { color: '#333' } },
+    }
+  }
+});
+
+new Chart(document.getElementById('chartMonthly'), {
+  type: 'bar',
+  data: {
+    labels: D.monthLabels,
+    datasets: [
+      { label: 'Отзывов', data: D.monthCounts, backgroundColor: palette.purple, yAxisID: 'y' },
+      { label: 'Ср. рейтинг', data: D.monthRatings, borderColor: palette.yellow, backgroundColor: palette.yellow, yAxisID: 'y1', type: 'line', tension: 0.3, spanGaps: true },
+    ]
+  },
+  options: {
+    ...baseOpts,
+    scales: {
+      x: { ticks: { color: palette.muted }, grid: { color: '#333' } },
+      y: { position:'left', ticks: { color: palette.muted }, grid: { color: '#333' } },
+      y1: { position:'right', min: 0, max: 5, ticks: { color: palette.muted }, grid: { display: false } },
+    }
+  }
+});
+</script>
+
+</body>
+</html>

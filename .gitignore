@@ -1,0 +1,35 @@
+# Сырые данные и личная информация — НЕ публикуем
+data/
+ОПРОС*.csv
+
+# Отчёты — публикуем только финальный дашборд
+reports/*
+!reports/2026-06-11-reviews-dashboard.html
+
+# Временные и отладочные файлы
+tmp/
+.playwright-mcp/
+*.log
+*.png
+*-debug.html
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Локальные конфиги и кэш редакторов
+.mcp.json
+scripts/monitor-config.json
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Мусор в корне (дубли и временные выгрузки)
+2gis-v2.json
+reviews-skill2go-v2.json
+llm-tools-32k
+CUsersbogacEducationzerocoder-reviews.claudeagents/
